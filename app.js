@@ -1,43 +1,70 @@
 const express = require('express');
-const sequelize = require('./config/database');
-const app = express();
-const PORT = process.env.PORT || 3000;
+const sequelize = require('./config/database.js');
+const autorRoutes = require('./routes/autorRoutes');
+const libroRoutes = require('./routes/libroRoutes');
 
-// Middleware para interpretar JSON en el body de las solicitudes
+const app = express();
 app.use(express.json());
 
-const Autor = require('./models/Autor');
-const Libro = require('./models/Libro');
+// Rutas principales
+app.use('/api/autores', autorRoutes);
+app.use('/api/libros', libroRoutes);
 
-const autoresRoutes = require('./routes/autores');
-const librosRoutes = require('./routes/libros');
+// Sincronizar base de datos y levantar servidor
+(async () => {
+  try {
+    await sequelize.sync({ force: false }); // Cambiar a `true` si deseas reiniciar las tablas
+    console.log('Base de datos sincronizada');
+
+    app.listen(3000, () => {
+      console.log('Servidor corriendo en http://localhost:3000');
+    });
+  } catch (error) {
+    console.error('Error al sincronizar la base de datos:', error);
+  }
+})();
 
 
-//Chequear el nombre de estos...
-app.use('/api/autores', autoresRoutes);
-app.use('/api/libros', librosRoutes);
+// const express = require('express');
+// const sequelize = require('./config/database');
+// const app = express();
+// const PORT = process.env.PORT || 3000;
 
-app.get('/', (req, res) => {
-  res.send('Ta andandoooo!');
-});
+// // Middleware para interpretar JSON en el body de las solicitudes
+// app.use(express.json());
 
-// Conectar a la Base
-sequelize.authenticate()
-  .then(() => {
-    console.log('Conexión a la BD exitosa');
-  })
-  .catch(error => {
-    console.error('No se pudo conectar a la BD', error);
-  });
+// const Autor = require('./models/Autor');
+// const Libro = require('./models/Libro');
 
-sequelize.sync({ force: false }) // Cambia a true solo para borrar y crear tablas
-  .then(() => {
-    console.log('Tablas sincronizadas');
-  })
-  .catch(error => {
-    console.error('Error al sincronizar las tablas:', error);
-  });
+// const autoresRoutes = require('./routes/autores');
+// const librosRoutes = require('./routes/libros');
 
-app.listen(PORT, () => {
-  console.log(`Servidor escuchando en el puerto ${PORT}`);
-});
+
+// //Chequear el nombre de estos...
+// app.use('/api/autores', autoresRoutes);
+// app.use('/api/libros', librosRoutes);
+
+// app.get('/', (req, res) => {
+//   res.send('Ta andandoooo!');
+// });
+
+// // Conectar a la Base
+// sequelize.authenticate()
+//   .then(() => {
+//     console.log('Conexión a la BD exitosa');
+//   })
+//   .catch(error => {
+//     console.error('No se pudo conectar a la BD', error);
+//   });
+
+// sequelize.sync({ force: false }) // Cambia a true solo para borrar y crear tablas
+//   .then(() => {
+//     console.log('Tablas sincronizadas');
+//   })
+//   .catch(error => {
+//     console.error('Error al sincronizar las tablas:', error);
+//   });
+
+// app.listen(PORT, () => {
+//   console.log(`Servidor escuchando en el puerto ${PORT}`);
+// });
