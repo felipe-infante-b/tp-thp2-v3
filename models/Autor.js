@@ -1,19 +1,36 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/database');
+module.exports = (sequelize, DataTypes) => {
+  const Autor = sequelize.define('Autor', {
+    nombre: DataTypes.STRING,
+    apellido: DataTypes.STRING,
+    fechaNacimiento: DataTypes.DATE
+  });
 
-const Autor = sequelize.define('Autor', {
-  nombre: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  apellido: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  fechaNacimiento: {
-    type: DataTypes.DATEONLY,
-    allowNull: true,
-  },
-});
+  return Autor;
+};
 
-module.exports = Autor;
+
+
+// const { DataTypes } = require('sequelize');
+// const sequelize = require('../config/database');
+
+// const Autor = sequelize.define('Autor', {
+//   nombre: {
+//     type: DataTypes.STRING,
+//     allowNull: false,
+//   },
+//   apellido: {
+//     type: DataTypes.STRING,
+//     allowNull: false,
+//   },
+//   fechaNacimiento: {
+//     type: DataTypes.DATEONLY,
+//     allowNull: true,
+//   },
+// });
+
+// module.exports = Autor;
+
+// models/autor.js
+
+
+
