@@ -13,9 +13,6 @@ Cada libro tiene una cantidad (que no puede bajar de 1),
 Cantidad por default es 1 y se puede incrementar o decrementar.
 Se usa SQLite para almacenar la informacion.
 
-Requerimientos:
-Node.js, Git, SQLite.
-
 PASOS:
 1.Clonar repositorio de GitHub
 git clone https://github.com/felipe-infante-b/tp-thp2-v3.git
