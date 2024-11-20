@@ -20,6 +20,35 @@ exports.createAutor = async (req, res) => {
   }
 };
 
+exports.updateAutor = async (req, res) => {
+  try {
+        const autor = await LiAutorbro.findByPk(req.params.id);
+        if (autor) {
+          await libro.update(req.body);
+          res.json(autor);
+        } else {
+          res.status(404).json({ error: 'Autor no encontrado' });
+        }
+      } catch (error) {
+        res.status(500).json({ error: 'Error al actualizar el autor' });
+        console.log(error);
+      }
+};
+
+exports.deleteAutor = async (req, res) => {
+  try {
+        const autor = await Autor.findByPk(req.params.id);
+        if (autor) {
+          await autor.destroy();
+          res.json({ message: 'Autor eliminado' });
+        } else {
+          res.status(404).json({ error: 'Autor no encontrado' });
+        }
+      } catch (error) {
+        res.status(500).json({ error: 'Error al eliminar el autor' });
+      }
+}
+
 
 
 // // controllers/autorController.js
