@@ -27,8 +27,8 @@ exports.getLibro = async (req, res) => {
 
 exports.createLibro = async (req, res) => {
   try {
-    const { titulo, descripcion, fechaPublicacion, autorId } = req.body;
-    const libro = await Libro.create({ titulo, descripcion, fechaPublicacion, autorId });
+    const { titulo, genero, cantidad, autorId } = req.body;
+    const libro = await Libro.create({ titulo, genero, cantidad, autorId });
     res.status(201).json(libro);
   } catch (error) {
     res.status(500).json({ error: 'Error al crear el libro' });
@@ -64,3 +64,45 @@ exports.deleteLibro = async (req, res) => {
         res.status(500).json({ error: 'Error al eliminar el libro' });
       }
 }
+
+exports.incrementarCantidad = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { cantidad } = req.body;
+
+    const libro = await Libro.findByPk(id);
+
+    if (libro) {
+      libro.cantidad += cantidad;
+      await libro.save();
+      res.json({ message: 'Cantidad incrementada', libro });
+    } else {
+      res.status(404).json({ error: 'Libro no encontrado' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Error al incrementar cantiadd de Ejemplares' });
+    console.log(error);
+  }
+};
+
+exports.decrementarCantidad = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { cantidad } = req.body;
+
+    const libro = await Libro.findByPk(id);
+
+    if (libro) {
+      if (libro.cantidad - cantidad < 0) {
+        return res.status(400).json({ error: 'Cantidad insuficiente de ejemplares' });
+      }
+      libro.cantidad -= cantidad;
+      await libro.save();
+      res.json({ message: 'Cantidad decrementada', libro });
+    } else {
+      res.status(404).json({ error: 'Libro no encontrado' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Error al decrementar ejemplares' });
+  }
+};

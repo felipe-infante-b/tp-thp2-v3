@@ -7,14 +7,16 @@ const Libro = sequelize.define('Libro', {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  descripcion: {
+  genero: {
     type: DataTypes.TEXT,
     allowNull: true,
   },
-  fechaPublicacion: {
-    type: DataTypes.DATEONLY,
-    allowNull: true,
-  },
+  cantidad: {
+    type: DataTypes.INTEGER,
+    defaultValue: 1,
+    validate: {
+      min: 1,
+  }},
 });
 
 module.exports = Libro;
